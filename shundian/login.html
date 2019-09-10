@@ -45,7 +45,6 @@
 			$("#footer").load("http://localhost/shundian/footer.html #footer")
 			fn();
 			$("#an").click(function(){
-				
 				fn()
 			})
 			function fn(){
@@ -68,11 +67,11 @@
 				    return Math.round(Math.random()*(max-min)+min)
 			}
 			$(".denglu").click=function(){
-				
+				console,log(2)
 				if ($('#yzm').val()!=$('#sjm').html) {
 					$(".tc").css({
 						display:"block"
-					})
+					}).html("验证码错误")
 					setTimeout(function() {
 						$(".tc").css({
 							display:"none"
@@ -80,7 +79,44 @@
 					}, 1000);
 				}
 			}
-			
+			class Register{
+			    constructor(){
+			        this.user = document.querySelector("#user");
+			        this.pass = document.querySelector("#pwd");
+			        this.yzm = document.querySelector("#yzm");
+					this.sjm=document.querySelector("#sjm");
+			        this.msg = document.querySelector(".tc");
+					this.btns=document.querySelector(".denglu")
+			        this.addEvent()
+			    }
+			    // 绑定事件
+			    addEvent(){
+			        this.btns.onclick = ()=>{
+						
+			            // 判断是否为首次注册
+			            this.getUserMsg()
+			        }
+			    }
+			    // 获取localStorage中的用户信息
+			    getUserMsg(){
+					
+			        this.usermsg = localStorage.getItem("usermsg") ? JSON.parse(localStorage.getItem("usermsg")) : [];
+			        for(var i=0;i<this.usermsg.length;i++){
+			            if(this.usermsg[i].user == this.user.value && this.usermsg[i].pass1 == this.pass.value){
+							
+							this.usermsg[i].onoff=1;
+			        		this.msg.style.display="block";
+			        		this.msg.innerHTML = "登录成功，两秒后跳转到首页";
+			        		setTimeout(() => {
+			        		    location.href = "http://localhost/shundian/index.html";
+			        		}, 2000);
+			            }
+			        }
+					localStorage.setItem("usermsg",JSON.stringify(this.usermsg))
+			    }
+			    // 首次注册和非首次注册的处理
+			}
+			new Register()
 			
 		}
 	</script>

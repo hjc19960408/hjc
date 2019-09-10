@@ -3,7 +3,252 @@
 	<head>
 		<meta charset="utf-8">
 		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/public.css" />
+		<link href="css/index.css" type="text/css" rel="stylesheet" />
+		<style type="text/css">
+			#shoppingcar img{
+				width: 100px;height:100px ;
+			}
+			#shoppingcar table{display: none;}
+		</style>
 	</head>
 	<body>
+		<div id="top">
+			
+		</div>
+		<div id="shoppingcar">
+			<h2><a href="index.html">继续购物</a></h2>
+			<h2 style="text-align: center;" id="h2">购物车是空的，去选点商品再来吧<a href="list.html">去购物</a></h2>
+			<table border="1" cellspacing="5px" cellpadding="5px" width="1000px" align="center" style="text-align: center;">
+				<thead>
+					<tr>
+						<th>全选</th>
+						<th>图片</th>
+						<th style="width: 450px;">名字</th>
+						<th>单价</th>
+						<th style="width: 100px;">数量</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><input type="checkbox" name="" id="" value="" /></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td>
+							<input type="button" name="" id="" value="-" />
+							<span>12</span>
+							<input type="button" name="" id="" value="+" />
+						</td>
+						<td>删除</td>
+					</tr>
+				<tfoot>
+					<tr>
+						<td><input type="checkbox" name="qx" id="" value="" /></td>
+						<td></td>
+						<td></td>
+						<td>
+							<span id="totalPrice">
+								0
+							</span>
+						</td>
+						<td>
+							<span id="totalQuantity">
+								0
+							</span>
+						</td>
+						<td>结算</td>
+					</tr>
+				</tfoot>
+					
+				</tbody>
+			</table>
+		</div>
+		
+		<div id="footer">
+			
+		</div>
+		<script src="js/ajax.2.0.js"></script>
+		<script src="js/jquery.js"></script>
+		<script type="text/javascript">
+			$("#top").load("http://localhost/shundian/header.html #top")
+			$("#footer").load("http://localhost/shundian/footer.html #footer")
+			class Car{
+				constructor(){
+					this.url="http://localhost/shundian/data/goods.json";
+					this.h2=document.getElementById('h2');
+					this.last=document.getElementById('last');
+					this.table = document.querySelector("table");
+					this.tbody = document.querySelector("tbody");
+					this.totalPrice=document.getElementById('totalPrice');
+					this.totalQuantity=document.getElementById('totalQuantity');
+					this.qx=document.getElementsByName('qx')[0];
+					this.ah=document.getElementsByName('h');
+					this.tf=document.querySelector("tfoot");
+					this.load()
+				}
+				load(){
+				    var that = this;
+				    ajax({
+				        url:this.url,
+				        success:function(res){
+				            that.res = JSON.parse(res);
+				            // 2.ajax请求成功之后，获取localstorage
+				            that.getLocal()
+				        }
+				    })
+				}
+				getLocal(){
+				    // 获取
+				    this.goods = localStorage.getItem("goods") ? JSON.parse(localStorage.getItem("goods")) : [];
+				    if (this.goods.length>0) {
+				    	this.h2.style.display='none';
+				    	this.table.style.display="table";
+						this.addEvent()
+						this.display()
+				    }
+				}
+				display(){
+					
+					var str='';var num=0;var price=0;
+					for(var i=0;i<this.res.length;i++){
+						for(var j=0;j<this.goods.length;j++){
+							
+							if (this.res[i].goodsID==this.goods[j].id) {
+								// console.log(1)
+								// num+=parseInt(this.goods[j].num);
+								// price+=this.goods[j].num*this.res[i].price;
+								str += `<tr index="${this.res[i].goodsId}">
+											<td><input type="checkbox" name="h" id="" value="" /></td>
+											<td><img src="${this.res[i].url}"></td>
+											<td >${this.res[i].del}</td>
+											<td>${this.res[i].price}</td>
+											<td>
+												<input type="button" name="" class="reduce" value="-" />
+												<span>${this.goods[j].num}</span>
+												<input type="button" name="" class="add" value="+" />
+											</td>
+											<td class="delete">删除</td>
+										</tr>`;
+							}
+						}
+					}
+					this.tbody.innerHTML=str;
+					// this.totalQuantity.innerHTML=num;
+					// this.totalPrice.innerHTML=price;
+					
+				}
+				 addEvent(){
+				    var that = this;
+				    this.tbody.addEventListener("click",function(eve){
+				        var e = eve || window.event;
+				        var target = e.target || e.srcElement;
+				        if(target.className == "delete"){
+				            // 5.保存点击删除的商品的id
+				            that.id = target.parentNode.getAttribute("index");
+				            // 6.删除DOM元素
+				            target.parentNode.remove();
+				            // 7.从localstorage中找到对应的商品数据
+				            that.setLocal(function(i){
+				                // 删除
+				                that.goods.splice(i,1);
+				            });
+				        }
+						if (target.className=='reduce') {
+							if (target.parentNode.children[1].innerHTML<=1) {
+								
+							} else{
+								target.parentNode.children[1].innerHTML=target.parentNode.children[1].innerHTML-1
+								that.value=target.parentNode.children[1].innerHTML;
+								if (target.parentNode.parentNode.children[0].checked) {
+									that.id=target.parentNode.parentNode.getAttribute("index");
+								that.totalQuantity.innerHTML-=1;
+								that.totalPrice.innerHTML-=target.parentNode.parentNode.children[3].innerHTML.slice(1,-1);
+								}
+								
+								that.setLocal(function(i){
+									that.goods[i].num = that.value;
+								})
+								
+							}
+							
+						}
+						if (target.className=='add') {
+							target.parentNode.children[1].innerHTML=parseInt(target.parentNode.children[1].innerHTML)+1
+							that.value=target.parentNode.children[1].innerHTML;
+							that.id=target.parentNode.parentNode.getAttribute("index");
+							// console.log(！target.parentNode.parentNode.children[0].checked)
+							if (target.parentNode.parentNode.children[0].checked) {
+									that.totalQuantity.innerHTML=parseInt(that.totalQuantity.innerHTML)+1;
+								that.totalPrice.innerHTML=parseInt(that.totalPrice.innerHTML)+parseInt(target.parentNode.parentNode.children[3].innerHTML.slice(1,-1));
+							}
+							
+								
+							
+							
+							that.setLocal(function(i){
+							    that.goods[i].num = that.value;
+							})
+						}
+						if (target.name=='h') {
+							if (target.checked) {
+								// console.log(target.parentNode.parentNode.children[4].children[1].innerHTML)
+								// console.log(parseInt(that.totalQuantity.innerHTML))
+								that.totalQuantity.innerHTML=parseInt(that.totalQuantity.innerHTML)+parseInt(target.parentNode.parentNode.children[4].children[1].innerHTML)
+								that.totalPrice.innerHTML=parseInt(that.totalPrice.innerHTML)+parseInt(target.parentNode.parentNode.children[3].innerHTML.slice(1,-1))*parseInt(target.parentNode.parentNode.children[4].children[1].innerHTML);
+							}else{
+								that.qx.checked=false;
+								that.totalQuantity.innerHTML=parseInt(that.totalQuantity.innerHTML)-parseInt(target.parentNode.parentNode.children[4].children[1].innerHTML);
+								that.totalPrice.innerHTML=parseInt(that.totalPrice.innerHTML)-parseInt(target.parentNode.parentNode.children[3].innerHTML.slice(1,-1))*parseInt(target.parentNode.parentNode.children[4].children[1].innerHTML);
+							}
+							
+						}
+						
+				    })
+					this.tf.addEventListener("click",function(eve){
+						var e=eve || window.event;
+						var target = e.target || e.srcElement;
+						if (target.name="qx") {
+							var tbd=target.parentNode.parentNode.parentNode.previousElementSibling.children;
+							if(target.checked){
+							    // console.log(1);
+								that.totalQuantity.innerHTML=0;
+								that.totalPrice.innerHTML=0;
+							    for(var i =0;i<tbd.length;i++){
+							        tbd[i].children[0].children[0].checked = target.checked;
+									var qi=tbd[i].children[3].innerHTML.slice(1,-1)
+									// console.log(tbd[i].children[3].innerHTML,qi)
+							       that.totalQuantity.innerHTML =parseInt(that.totalQuantity.innerHTML) + parseInt(tbd[i].children[4].children[1].innerHTML);
+							       that.totalPrice.innerHTML =parseInt(that.totalPrice.innerHTML)+qi*tbd[i].children[4].children[1].innerHTML;
+							    }
+							}else{
+								for(var i =0;i<tbd.length;i++){
+								    tbd[i].children[0].children[0].checked = target.checked;
+								}
+								that.totalQuantity.innerHTML=0;
+								that.totalPrice.innerHTML=0;
+							}
+						}
+					})
+				}
+				setLocal(fn){
+				    // 遍历localstorage的数据
+				    for(var i=0;i<this.goods.length;i++){
+				        // 判断符合
+				        if(this.goods[i].id == this.id){
+				            // 做拿到相同数据之后的操作，可能是删除，可能是修改，取决于回调函数中传什么
+				            fn(i);
+				        }
+				    }
+				    // 再设置回去，实现修改localstorage的目的
+				    localStorage.setItem("goods",JSON.stringify(this.goods));
+				}
+				
+			}
+			new Car();
+		$("#top").load("http://localhost/shundian/header.html #top")
+		$("#footer").load("http://localhost/shundian/footer.html #footer")
+		</script>
 	</body>
 </html>

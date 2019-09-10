@@ -5,28 +5,50 @@
 			this.url="http://localhost/shundian/data/goods.json";
 			this.load();
 			this.addEvent();
+			
 		}
 		load(){
 			var that=this;
 			ajax({
 				url:this.url,
 				success:function(res){
-					console.log(res)
 					that.res=JSON.parse(res);
 					that.display()
+					var aimg = document.querySelectorAll("#tj li img");
+					var arr = Array.from(aimg);
+					console.log(aimg)
+					var t;
+					
+					onload = onscroll = function(){
+					    clearTimeout(t);
+					    t = setTimeout(function(){
+					        fn();
+					    },100)
+					}
+					function fn(){
+					    var scrollT = document.documentElement.scrollTop;
+					    var clientH = document.documentElement.clientHeight;
+					    
+					    for(var i=0;i<arr.length;i++){
+					        if(arr[i].offsetTop - scrollT < clientH){
+					            arr[i].src = arr[i].getAttribute("abc-src");
+					            arr.splice(i,1)
+					        }
+					    }
+					}
 				}
 			})
 		}
 		display(){
 			var str="";
 			for(var i=0;i<this.res.length;i++){
-				str+=`<li>
-						  <div class="Recommend-commodity-new" index="${this.res[i].goodsId}">
+				str+=`<li index="${this.res[i].goodsID}">
+						  <div class="Recommend-commodity-new" >
 							<p>新品</p>
 						  </div>
 						  <div class="Recommend-commodity-banner" >
-							<a href="">
-								<img src="${this.res[i].url}">
+							<a>
+								<img abc-src="${this.res[i].url}">
 							</a>
 							<h4>${this.res[i].del}
 							</h4>
@@ -42,24 +64,33 @@
 			this.box.innerHTML=str;
 		}
 		addEvent(){
+			console.log(this.box)
 			var that=this;
 			this.box.addEventListener("click",function(eve){
+				// console.log(1)
 				var e=eve || window.event;
 				var target=e.target || e.srcElement;
-				if(target.className=="btn"){
+				if (target.className=="Recommend-commodity-banner") {
+					location.href="http://localhost/shundian/goods.html";
+				}
+				if(target.id=="btn"){
+					// console.log(target.parentNode)
 					that.id=target.parentNode.getAttribute("index");
 					that.setLocal();
 				}
 			})
 		}
 		setLocal(){
+			
 			var that=this;
 			this.goods=localStorage.getItem("goods") ? JSON.parse(localStorage.getItem("goods")) : [];
+			console.log(this.goods)
 			if (this.goods.length==0) {
 				this.goods.push({
 					id:this.id,
 					num:1
 				})
+				
 			} else{
 				var i;
 				var onoff=this.goods.some(function(value,index){
@@ -79,4 +110,26 @@
 		}
 	}
 	new List();
+	// var aimg = document.querySelectorAll("#tj li img");
+	// var arr = Array.from(aimg);
+	// console.log(aimg[0])
+	// var t;
+	// 
+	// onload = onscroll = function(){
+	//     clearTimeout(t);
+	//     t = setTimeout(function(){
+	//         // fn();
+	//     },100)
+	// }
+	function fn(){
+	    var scrollT = document.documentElement.scrollTop;
+	    var clientH = document.documentElement.clientHeight;
+	    
+	    for(var i=0;i<arr.length;i++){
+	        if(arr[i].offsetTop - scrollT < clientH){
+	            arr[i].src = arr[i].getAttribute("abc-src");
+	            arr.splice(i,1)
+	        }
+	    }
+	}
 })();

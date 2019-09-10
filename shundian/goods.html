@@ -78,8 +78,8 @@
 					库存白色 <i>255</i>
 				</div>
 				<div class="function">
-					<a href=""><span>立即购买</span></a>
-					<a href="" id="shopping"><span>加入购物车</span></a>
+					<a ><span>立即购买</span></a>
+					<a id="shopping"><span>加入购物车</span></a>
 				</div>
 			</div>
 		</div>
@@ -95,7 +95,35 @@
 		
 			$("#header").load("http://localhost/shundian/header.html #top");
 			$("#footer").load("http://localhost/shundian/footer.html #footer");
-		
+		class List{
+			constructor() {
+			    this.box=document.querySelector('#shopping');
+				this.addEvent();
+			}
+			addEvent(){
+				console.log(this.box)
+				var that=this;
+				this.box.addEventListener("click",function(){
+						that.setLocal();
+				})
+			}
+			setLocal(){
+				var that=this;
+				this.goods=localStorage.getItem("goods") ? JSON.parse(localStorage.getItem("goods")) : [];
+				for (var i=0;i<this.goods.length;i++) {
+					if (this.goods[i].id=="tj1") {
+						this.goods[i].num++;
+					} else{
+						this.goods.push({
+							id:this.id,
+							num:1
+						})
+					}
+				}
+				localStorage.setItem("goods",JSON.stringify(this.goods));
+			}
+		}
+		new List();
 		
 	</script>
 </html>

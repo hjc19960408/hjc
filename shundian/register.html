@@ -11,7 +11,7 @@
 			
 		</div>
 		<div id="zhuce" style="width: 100%;height: 600px;background: url(https://www.sundan.com/public/images/2b/1c/e8/755cbdcf1148e0ba752673551e455ff91aa7b44d.jpg) no-repeat center center;position:relative;">
-			<div class="tc" style="display: none;position: absolute;background: #FFFFFF;color: red;width: 200px;height:100px;right: 5500px;top:200pxs;">
+			<div class="tc" style="display: none;position: absolute;background: #FFFFFF;color: red;width: 200px;height:100px;right: 550px;top:200px;font: 16px/50px '';">
 				
 			</div>
 			<div class="zc" style="width: 330px;height: 400px;position: absolute;right: 150px;top: 100px;background: #fff;padding: 10px 25px;">
@@ -28,7 +28,7 @@
 					注册
 				</div>
 				<div class="zc" style="height: 40px;font: 14px/40px '';">
-					已注册？<a href="register.html" style="color: #00BAD6;margin-left: 5px;">去登录</a>
+					已注册？<a href="login.html" style="color: #00BAD6;margin-left: 5px;">去登录</a>
 				</div>
 			</div>
 		</div>
@@ -38,7 +38,7 @@
 	</body>
 	<script src="js/jquery.js"></script>
 	<script >
-		onload=function(){
+		
 			$("#top").load("http://localhost/shundian/header.html #top")
 			$("#footer").load("http://localhost/shundian/footer.html #footer")
 			var tc=document.getElementsByClassName("tc")[0];
@@ -46,16 +46,34 @@
 			var tel=document.getElementById('tel');
 			var pwd=document.getElementById('pwd');
 			var confirm=document.getElementById('confirm');
+			
 			user.onblur=function(){
+				console.log(1)
 				if (!/.{4,}/.test(user.value)) {
+					tc.style.display="block";
 					tc.innerHTML="请输入至少四位";
 				}
+				setTimeout(function(){
+					tc.style.display="none";
+				},1000)
+			}
+			tel.onblur=function(){
 				if (!/\d{11}/g.test(tel.value)) {
+					tc.style.display="block";
 					tc.innerHTML="请输入正确的号码";
 				}
+				setTimeout(function(){
+					tc.style.display="none";
+				},1000)
+			}
+			confirm.onblur=function(){
 				if (confirm.value!=pwd.value) {
+					tc.style.display="block";
 					tc.innerHTML="两次密码不一致";
 				}
+				setTimeout(function(){
+					tc.style.display="none";
+				},1000)
 			}
 			class Register{
 			    constructor(){
@@ -96,11 +114,12 @@
 			                location.href = "http://localhost/shundian/login.html";
 			            },3000)
 			
-			        }else{
+			        }else if(this.pass1.value==this.pass2.value && this.pass1!=""){
 			            // 非首次判断重名
 			            this.usermsg = JSON.parse(localStorage.getItem("usermsg"));
 			            for(var i=0;i<this.usermsg.length;i++){
 			                if(this.usermsg[i].user == this.user.value){
+								this.msg.style.display="block";
 			                    this.msg.innerHTML = "重名";
 			                    return;
 			                }
@@ -111,9 +130,10 @@
 			                pass2:this.pass2.value,
 			                onoff:0
 			            })
-			            this.msg.innerHTML = "注册成功，三秒后跳转到登录页面";
+						this.msg.style.display="block";
+			            this.msg.innerHTML = "注册成功，两秒后跳转到登录页面";
 			            setTimeout(() => {
-			                location.href = "http://localhost/store/login/login.html";
+			                location.href = "http://localhost/shundian/login.html";
 			            }, 2000);
 			        }
 			        localStorage.setItem("usermsg",JSON.stringify(this.usermsg))
@@ -121,7 +141,7 @@
 			}
 			new Register()
 
-		}
+		
 		
 		
 	</script>

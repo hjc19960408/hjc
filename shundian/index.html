@@ -111,7 +111,7 @@
 					<div class="head-right-function">
 						<a href="login.html"><div id="logon">登录</div></a>
 						<a href="register.html"><div id="register">注册</div></a>
-						<a href="car.html">
+						<a>
 							<div id="car">
 								<div class="head-right-function-car"></div>
 								<div class="car-num">0</div>
@@ -1182,6 +1182,10 @@
 			<div class="left-t" style="height: 30%;">
 				
 			</div>
+			<div class="shopcar" style="height: 90px;background: url(images/gwc.png)no-repeat center center;">
+				
+			</div>
+			
 		</div>
 	</body>
 	<script src="js/jquery.js"></script>
@@ -1198,4 +1202,25 @@
 	<script src="js/four-r.js"></script>
 	<script src="js/four-goods.js"></script>
 	<script src="js/tejia.js"></script>
+	<script>
+		;(function(){
+			 var usermsg = localStorage.getItem("usermsg") ? JSON.parse(localStorage.getItem("usermsg")) : [];
+			 var fc=document.querySelector(".head-right-function");
+			 console.log(usermsg)
+			 for(var i=0;i<usermsg.length;i++){
+			     if (usermsg[i].onoff==1) {
+			 	fc.innerHTML=`
+			 		<div style="width:140px;height:40px;float:left;font:12px/40px '';">欢迎会员${usermsg[i].user}</div>
+			 		<a href="car.html">
+			 			<div id="car">
+			 				<div class="head-right-function-car"></div>
+			 				<div class="car-num">0</div>
+			 			</div>
+			 		</a>	`
+			 	
+			 }
+			 }
+			 
+		})();
+	</script>
 </html>
