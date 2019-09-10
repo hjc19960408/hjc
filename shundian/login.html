@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/public.css" />
+		<link href="css/index.css" type="text/css" rel="stylesheet" />
+		<link href="css/login.css" type="text/css" rel="stylesheet"/>
+	</head>
+	<body>
+		<div id="top">
+			
+		</div>
+		<div id="login">
+			<div class="tc" style="display: none;position: absolute;background: #FFFFFF;color: red;width: 200px;height:100px;right: 5500px;top:200pxs;">
+				验证码不正确
+			</div>
+			<div class="dl">
+				<p>用户登录</p>
+				<input type="text" name="" id="user" value="" placeholder="用户名/邮箱地址/手机号"/>
+				<s></s>
+				<input type="password" name="" id="pwd" value="" placeholder="填写密码"/>
+				<i></i>
+				<input type="text" name="" id="yzm" value="" placeholder="填写验证码" style="width: 120px;padding-left: 10px;"/>
+				<span id="sjm">
+					2222
+				</span>
+				<b id="an" style="float: right;width: 100px;height: 40px;font: 14px/40px '';color: #007BFF;">看不清，换一个</b>
+				<div class="denglu" style="height: 40px;background: #00BAD6;color: #FFFFFF;text-align: center;font-size:16px;line-height: 40px;">
+					登录
+				</div>
+				<div class="zc" style="height: 40px;font: 14px/40px '';">
+					首次登录？请<a href="register.html" style="color: #00BAD6;margin-left: 5px;">去注册</a>
+				</div>
+			</div>
+		</div>
+		<div id="footer">
+			
+		</div>
+	</body>
+	<script src="js/jquery.js"></script>
+	<script >
+		onload=function(){
+			$("#top").load("http://localhost/shundian/header.html #top")
+			$("#footer").load("http://localhost/shundian/footer.html #footer")
+			fn();
+			$("#an").click(function(){
+				
+				fn()
+			})
+			function fn(){
+				
+				var str = "";
+				for(var i=0;i<4;i++){
+				    var az = String.fromCharCode(random(97,122));
+				    var AZ = String.fromCharCode(random(65,90));
+				    var num = random(0,9);
+				    str = str + az + AZ + num;
+				}
+				var randomStr = "";
+				for(var i=0;i<4;i++){
+				    randomStr += str[random(0,str.length-1)];
+				}
+				console.log($("#an")[0].innerHTML)
+				$("#sjm")[0].innerHTML=randomStr;
+			}
+			function random(max,min){
+				    return Math.round(Math.random()*(max-min)+min)
+			}
+			$(".denglu").click=function(){
+				
+				if ($('#yzm').val()!=$('#sjm').html) {
+					$(".tc").css({
+						display:"block"
+					})
+					setTimeout(function() {
+						$(".tc").css({
+							display:"none"
+						})
+					}, 1000);
+				}
+			}
+			
+			
+		}
+	</script>
+</html>

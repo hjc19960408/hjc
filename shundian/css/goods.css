@@ -1,0 +1,35 @@
+#position{width: 100%;height: 44px;border-bottom: 1px solid #CCCCCC;}
+.layout{width: 1225px;height: 44px;margin: 0 auto;}
+.position-main{font: 12px/44px "";}
+.position-main span a{color: #3e3e3e;margin: 0 3px;}
+.position-main span a i{color: #00BAD6;}
+.position-main .now{color: #666;}
+
+#goods{width: 1225px;height: 645px;}
+.goods-left{width: 500px;height: 500px;margin-top: 100px;float: left;position: relative;}
+.sbox{width: 500px;height: 500px;position: absolute;left: 0;top: 0;}
+.goods-left img{width: 500px;height: 500px;}
+
+.goods-right{width: 500px;height: 500px;margin-top: 100px;float: right;position: relative;overflow: hidden;}
+.bbox{width: 500px;height: 500px;overflow: hidden;position: absolute;left: 0;top: 0;display: none;}
+.goods-right .bigimg{position: absolute;top: 0;left: 0;width: 800px;height: 800px;}
+.goods-right h2{font: 18px/30px "";height: 90px;}
+.goods-right .price{height: 64px;font: 40px/64px "";color: red;}
+.goods-right .color{height: 40px;font: 16px/40px "";}
+.goods-right .color a{width: 30px;height: 30px;display:inline-block;border: 1px solid #00BAD6;}
+.goods-right .color img{width: 30px;height: 30px;display: block;}
+.goods-right .size{height: 40px;font: 16px/40px "";}
+.goods-right .size a{display:inline-block;width:60px;height: 20px;border: 1px solid #0000FF;margin-top: 10px;font: 14px/20px "";text-align: center;}
+.goods-right .num{height: 40px;}
+.goods-right .num span{float: left;font: 14px/40px "";}
+.goods-right .num .jiajian{float: left;margin-left: 150px;}
+.goods-right .num .jiajian a{float: left;width: 35px;height: 35px;border: 1px solid #999999;font: 14px/40px "";text-align: center;}
+.goods-right .num .jiajian a:hover{cursor: pointer;}
+.goods-right .num .jiajian input{float: left;width: 45px;height: 35px;border: 1px solid #999999;font: 14px/40px "";text-align: center;}
+.goods-right .num .yaoqiu{float: left;margin-left: 100px;font: 14px/40px "";color: red;}
+.goods-right .jianjie{height: 100px;border-bottom: 1px solid #999999;font:14px/20px "";border-bottom: 1px solid #999999;border-top: 1px solid #999999;}
+.goods-right .kucun{height: 40px;font: 14px/40px "";}
+.goods-right .kucun i{margin:0 20px;}
+.goods-right .function{height: 40px;text-align: center;}
+.goods-right .function a{float: left;width: 130px;height: 40px;background: red;text-align: center;font: 14px/40px "";color: #fff;}
+.goods-right .function #shopping{background: blue;text-align: center;font: 14px/40px "";color: #fff;}

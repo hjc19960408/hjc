@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/public.css" />
+		<link href="css/index.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+		<div id="top">
+			
+		</div>
+		<div id="zhuce" style="width: 100%;height: 600px;background: url(https://www.sundan.com/public/images/2b/1c/e8/755cbdcf1148e0ba752673551e455ff91aa7b44d.jpg) no-repeat center center;position:relative;">
+			<div class="tc" style="display: none;position: absolute;background: #FFFFFF;color: red;width: 200px;height:100px;right: 5500px;top:200pxs;">
+				
+			</div>
+			<div class="zc" style="width: 330px;height: 400px;position: absolute;right: 150px;top: 100px;background: #fff;padding: 10px 25px;">
+				<p style="height: 60px;font: 20px/3 '';">用户注册</p>
+				<input type="text" name="" id="user" value="" placeholder="请填写登录账号,最少四个字符" style="width: 270px;height: 40px;border: 1px solid #00BAD6;padding-left: 40px;font: 16px/60px '';margin-bottom: 20px;"/>
+				<s style="position: absolute;width: 40px;height: 40px;background: url(https://www.sundan.com/themes/shundian/images/login_name.png) no-repeat center center;left: 26px;top: 71px;background-color: #eee;"></s>
+				<input type="tel" name="" id="tel" value="" placeholder="请输入手机号" style="width: 270px;height: 40px;border: 1px solid #00BAD6;padding-left: 40px;font: 16px/60px '';margin-bottom: 20px;"/>
+				<s style="position: absolute;width: 40px;height: 40px;background: url(https://www.sundan.com/themes/shundian/images/login_name.png) no-repeat center center;left: 26px;top: 133px;background-color: #eee;"></s>
+				<input type="password" name="" id="pwd" value="" placeholder="请输入密码" style="width: 270px;height: 40px;border: 1px solid #00BAD6;padding-left: 40px;font: 16px/60px '';margin-bottom: 20px;"/>
+				<i style="position: absolute;width: 40px;height: 40px;background: url(https://www.sundan.com/themes/shundian/images/member-password.png) no-repeat center center;left: 26px;top: 195px;background-color: #eee;"></i>
+				<input type="password" name="" id="confirm" value="" placeholder="请确认密码" style="width: 270px;height: 40px;border: 1px solid #00BAD6;padding-left: 40px;font: 16px/60px '';margin-bottom: 20px;"/>
+				<i style="position: absolute;width: 40px;height: 40px;background: url(https://www.sundan.com/themes/shundian/images/member-password.png) no-repeat center center;left: 26px;top: 257px;background-color: #eee;"></i>
+				<div class="zhuce" style="height: 40px;background: #00BAD6;color: #FFFFFF;text-align: center;font-size:16px;line-height: 40px;">
+					注册
+				</div>
+				<div class="zc" style="height: 40px;font: 14px/40px '';">
+					已注册？<a href="register.html" style="color: #00BAD6;margin-left: 5px;">去登录</a>
+				</div>
+			</div>
+		</div>
+		<div id="footer">
+			
+		</div>
+	</body>
+	<script src="js/jquery.js"></script>
+	<script >
+		onload=function(){
+			$("#top").load("http://localhost/shundian/header.html #top")
+			$("#footer").load("http://localhost/shundian/footer.html #footer")
+			var tc=document.getElementsByClassName("tc")[0];
+			var user=document.getElementById('user');
+			var tel=document.getElementById('tel');
+			var pwd=document.getElementById('pwd');
+			var confirm=document.getElementById('confirm');
+			user.onblur=function(){
+				if (!/.{4,}/.test(user.value)) {
+					tc.innerHTML="请输入至少四位";
+				}
+				if (!/\d{11}/g.test(tel.value)) {
+					tc.innerHTML="请输入正确的号码";
+				}
+				if (confirm.value!=pwd.value) {
+					tc.innerHTML="两次密码不一致";
+				}
+			}
+			class Register{
+			    constructor(){
+			        this.user = document.querySelector("#user");
+			        this.pass1 = document.querySelector("#pwd");
+			        this.pass2 = document.querySelector("#confirm");
+			        this.btns = document.querySelector(".zhuce");
+			        this.msg = document.querySelector(".tc");
+			
+			        this.addEvent()
+			    }
+			    // 绑定事件
+			    addEvent(){
+			        this.btns.onclick = ()=>{
+			            // 判断是否为首次注册
+			            this.getUserMsg()
+			        }
+			    }
+			    // 获取localStorage中的用户信息
+			    getUserMsg(){
+			        this.usermsg = localStorage.getItem("usermsg");
+			        this.setUserMsg()
+			    }
+			    // 首次注册和非首次注册的处理
+			    setUserMsg(){
+			        // [{user:"admin",pass:admin,onoff:0},{user:"root",pass:root,onoff:0}]
+			        // 首次直接获取
+			        if(this.usermsg == null){
+			            // 首次
+			            this.usermsg = [{
+			                user:this.user.value,
+			                pass1:this.pass1.value,
+			                pass2:this.pass2.value,
+			                onoff:0
+			            }];
+			            this.msg.innerHTML = "注册成功，三秒后跳转到登录页面";
+			            setTimeout(() => {
+			                location.href = "http://localhost/shundian/login.html";
+			            },3000)
+			
+			        }else{
+			            // 非首次判断重名
+			            this.usermsg = JSON.parse(localStorage.getItem("usermsg"));
+			            for(var i=0;i<this.usermsg.length;i++){
+			                if(this.usermsg[i].user == this.user.value){
+			                    this.msg.innerHTML = "重名";
+			                    return;
+			                }
+			            }
+			            this.usermsg.push({
+			                user:this.user.value,
+			                pass1:this.pass1.value,
+			                pass2:this.pass2.value,
+			                onoff:0
+			            })
+			            this.msg.innerHTML = "注册成功，三秒后跳转到登录页面";
+			            setTimeout(() => {
+			                location.href = "http://localhost/store/login/login.html";
+			            }, 2000);
+			        }
+			        localStorage.setItem("usermsg",JSON.stringify(this.usermsg))
+			    }
+			}
+			new Register()
+
+		}
+		
+		
+	</script>
+</html>
